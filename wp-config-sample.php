@@ -17,7 +17,9 @@ if ( file_exists( dirname( __FILE__ ) . '/local-config.php' ) ) {
 // Custom Content Directory
 // ========================
 define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/content' );
-define( 'WP_CONTENT_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/content' );
+if (!defined('WP_CONTENT_URL')) {
+    define( 'WP_CONTENT_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/content' );
+}
 
 // ================================================
 // You almost certainly do not want to change these
@@ -60,8 +62,11 @@ define( 'WP_DEBUG_DISPLAY', false );
 // Debug mode
 // Debugging? Enable these. Can also enable them in local-config.php
 // =================================================================
-// define( 'SAVEQUERIES', true );
-// define( 'WP_DEBUG', true );
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    ini_set( 'display_errors', 1 );
+    define( 'WP_DEBUG_DISPLAY', true );
+    define( 'SAVEQUERIES', true );
+}
 
 // ======================================
 // Load a Memcached config if we have one
@@ -74,6 +79,7 @@ if ( file_exists( dirname( __FILE__ ) . '/memcached.php' ) )
 // ===========================================================================================
 define( 'WP_STAGE', '%%WP_STAGE%%' );
 define( 'STAGING_DOMAIN', '%%WP_STAGING_DOMAIN%%' ); // Does magic in WP Stack to handle staging domain rewriting
+define( 'NOVRIAN_WP_VER', '' ); // Custom Wordpress Version Tag
 
 // ===================
 // Bootstrap WordPress
